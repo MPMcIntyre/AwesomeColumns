@@ -1,0 +1,18 @@
+{
+  "name": "AwesomeColumns",
+  "version": "1.0.0",
+  "description": "Easily create columns with modified scroll speeds to ensure that all columns reach the end at the same time",
+  "main": "AwesomeColumns.js",
+  "repository": "https://github.com/MPMcIntyre/AwesomeColumns",
+  "author": "M. McIntyre",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@types/react": "^17.0.35",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
