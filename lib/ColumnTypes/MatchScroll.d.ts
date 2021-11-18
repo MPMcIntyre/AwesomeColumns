@@ -13,6 +13,7 @@ export default class MatchScroll extends React.Component<MatchScrollProps, any> 
     handleUpdate: () => void;
     componentDidUpdate(): void;
     componentWillUnmount(): void;
+    handleScroll: (e: any) => void;
     render(): JSX.Element;
 }
 export {};
