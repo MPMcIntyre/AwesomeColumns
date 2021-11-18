@@ -94,7 +94,6 @@ export default class MatchScroll extends React.Component<
         onTouchEnd={() => {
           this.setState({ isActive: false });
         }}
-        onTouchMove={this.handleScroll}
         onScroll={this.handleScroll}>
         {this.props.children}
       </div>
