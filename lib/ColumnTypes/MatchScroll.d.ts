@@ -1,5 +1,11 @@
 import React from "react";
-export default class MatchScroll extends React.Component<any, any> {
+declare type MatchScrollProps = {
+    scroll: number;
+    smoothScroll: boolean;
+    style: any;
+    updateScroll: (value: number) => void;
+};
+export default class MatchScroll extends React.Component<MatchScrollProps, any> {
     element: any;
     timeout: any;
     constructor(props: any);
@@ -9,3 +15,4 @@ export default class MatchScroll extends React.Component<any, any> {
     componentWillUnmount(): void;
     render(): JSX.Element;
 }
+export {};

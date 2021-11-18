@@ -1,6 +1,15 @@
 import React from "react";
 
-export default class MatchScroll extends React.Component<any, any> {
+type MatchScrollProps = {
+  scroll: number;
+  smoothScroll: boolean;
+  style: any;
+  updateScroll: (value: number) => void;
+};
+export default class MatchScroll extends React.Component<
+  MatchScrollProps,
+  any
+> {
   element: any; // React useRef hook for element
   timeout: any;
   constructor(props: any) {
@@ -55,6 +64,7 @@ export default class MatchScroll extends React.Component<any, any> {
   render() {
     return (
       <div
+        className="AwesomeColumnSubContent"
         ref={this.element}
         style={{ ...this.props.style, overflow: "scroll" }}
         onMouseEnter={() => {
@@ -76,7 +86,7 @@ export default class MatchScroll extends React.Component<any, any> {
               100 *
               (e.target.scrollTop /
                 (e.target.scrollHeight - window.innerHeight));
-            this.props.updateLength(fractionToTop);
+            this.props.updateScroll(fractionToTop);
           }
         }}>
         {this.props.children}

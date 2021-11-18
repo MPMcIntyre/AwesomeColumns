@@ -1,17 +1,29 @@
 import React from "react";
 import MatchScroll from "./ColumnTypes/MatchScroll";
 
-export default class AwesomeColumns extends React.Component<any, any> {
+type ContainerProps = {
+  height?: string;
+  width?: string;
+  style?: any;
+  smoothScroll: boolean;
+};
+
+type ContainerStates = {
+  scroll: number;
+};
+export default class AwesomeColumns extends React.Component<
+  ContainerProps,
+  ContainerStates
+> {
   containerStyle: any;
   constructor(props: any) {
     super(props);
 
     this.state = {
-      scroll: this.props.scroll ? this.props.scroll : 0,
-      ghostDivLength: 0,
-      ghostDivWidth: 0,
+      scroll: 0,
     };
 
+    // AwesomeColumns style
     this.containerStyle = {
       ...this.props.style,
       position: "relative",
@@ -31,44 +43,41 @@ export default class AwesomeColumns extends React.Component<any, any> {
     };
   }
 
-  componentDidMount() {
-    this.setState({
-      currentScrollHeight: 0,
-    });
-  }
+  // componentDidMount() {}
 
-  updateLength = (length: number) => {
+  // Update scroll position
+  updateScroll = (length: number) => {
     this.setState({
-      currentScrollHeight: length,
+      scroll: length,
     });
   };
 
+  // Render the Columns
   renderChildren = () => {
-    return React.Children.map(this.props.children, (child: any, i: number) => {
-      // if (React.isValidElement(child)) {
+    return React.Children.map(this.props.children, (child: any) => {
       const props: any = child?.props;
-      // if (React.Children.count(props.children) > 1) {
-      //   React.Children.forEach(child, (subChild: any) => {});
-      // }
       return (
         <MatchScroll
           style={props.style && props.style}
           smoothScroll={this.props.smoothScroll ? true : false}
-          index={i}
-          updateLength={this.updateLength}
-          scroll={this.state.currentScrollHeight}>
+          updateScroll={this.updateScroll}
+          scroll={this.state.scroll}>
           {child}
         </MatchScroll>
       );
-      // }
     });
   };
 
   render() {
-    return <div style={this.containerStyle}>{this.renderChildren()}</div>;
+    return (
+      <div className="AwesomeColumnsContainer" style={this.containerStyle}>
+        {this.renderChildren()}
+      </div>
+    );
   }
 }
 
+// Column
 type ColumnProps = {
   style?: any;
   columns?: number;
@@ -76,14 +85,23 @@ type ColumnProps = {
   padding: string;
 };
 
-export class Column extends React.Component<ColumnProps, any> {
+export class Column extends React.Component<ColumnProps, null> {
   columnStyle: any;
   childStyle: any;
 
   constructor(props: any) {
     super(props);
-    this.columnStyle = { ...props.style };
+    // Column style
+    this.columnStyle = {
+      ...props.style,
+      gridColumn: this.props.columns
+        ? `span {this.props.columns}`
+        : this.props.style?.gridColumn
+        ? this.props.style?.gridColumn
+        : "",
+    };
 
+    // ChildStyle
     this.childStyle = {
       display: "grid",
       alignContent: "center",
@@ -97,8 +115,10 @@ export class Column extends React.Component<ColumnProps, any> {
 
   render() {
     return (
-      <div style={this.columnStyle}>
-        <div style={this.childStyle}>{this.props.children}</div>
+      <div className="AwesomeColumn" style={this.columnStyle}>
+        <div className="AwesomeColumnContent" style={this.childStyle}>
+          {this.props.children}
+        </div>
       </div>
     );
   }

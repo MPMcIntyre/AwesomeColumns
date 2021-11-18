@@ -1,9 +1,17 @@
 import React from "react";
-export default class AwesomeColumns extends React.Component<any, any> {
+declare type ContainerProps = {
+    height?: string;
+    width?: string;
+    style?: any;
+    smoothScroll: boolean;
+};
+declare type ContainerStates = {
+    scroll: number;
+};
+export default class AwesomeColumns extends React.Component<ContainerProps, ContainerStates> {
     containerStyle: any;
     constructor(props: any);
-    componentDidMount(): void;
-    updateLength: (length: number) => void;
+    updateScroll: (length: number) => void;
     renderChildren: () => any;
     render(): JSX.Element;
 }
@@ -13,7 +21,7 @@ declare type ColumnProps = {
     reverse?: boolean;
     padding: string;
 };
-export declare class Column extends React.Component<ColumnProps, any> {
+export declare class Column extends React.Component<ColumnProps, null> {
     columnStyle: any;
     childStyle: any;
     constructor(props: any);
