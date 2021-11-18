@@ -61,6 +61,21 @@ export default class MatchScroll extends React.Component<
     clearTimeout(this.timeout);
   }
 
+  handleScroll = (e: any) => {
+    if (this.state.isActive) {
+      this.setState({
+        scroll:
+          100 *
+          (e.target.scrollTop / (e.target.scrollHeight - window.innerHeight)),
+      });
+
+      let fractionToTop =
+        100 *
+        (e.target.scrollTop / (e.target.scrollHeight - window.innerHeight));
+      this.props.updateScroll(fractionToTop);
+    }
+  };
+
   render() {
     return (
       <div
@@ -73,22 +88,14 @@ export default class MatchScroll extends React.Component<
         onMouseLeave={() => {
           this.setState({ isActive: false });
         }}
-        onScroll={(e: any) => {
-          if (this.state.isActive) {
-            this.setState({
-              scroll:
-                100 *
-                (e.target.scrollTop /
-                  (e.target.scrollHeight - window.innerHeight)),
-            });
-
-            let fractionToTop =
-              100 *
-              (e.target.scrollTop /
-                (e.target.scrollHeight - window.innerHeight));
-            this.props.updateScroll(fractionToTop);
-          }
-        }}>
+        onTouchStart={() => {
+          this.setState({ isActive: true });
+        }}
+        onTouchEnd={() => {
+          this.setState({ isActive: false });
+        }}
+        onTouchMove={this.handleScroll}
+        onScroll={this.handleScroll}>
         {this.props.children}
       </div>
     );
