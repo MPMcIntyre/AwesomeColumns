@@ -27,7 +27,7 @@ export default class AwesomeColumns extends React.Component<
     this.containerStyle = {
       ...this.props.style,
       position: "relative",
-      overflow: "scroll",
+      overflow: "hidden",
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(10px, 1fr))",
       width: this.props.width
@@ -91,14 +91,17 @@ export class Column extends React.Component<ColumnProps, null> {
 
   constructor(props: any) {
     super(props);
+    let gridColumnStyle: string = "";
+    if (this.props.columns) {
+      gridColumnStyle = `span ${this.props.columns}`;
+    } else if (this.props.style?.gridColumn) {
+      gridColumnStyle = this.props.style?.gridColumn;
+    }
+
     // Column style
     this.columnStyle = {
       ...props.style,
-      gridColumn: this.props.columns
-        ? `span ${this.props.columns}`
-        : this.props.style?.gridColumn
-        ? this.props.style.gridColumn
-        : "",
+      gridColumn: gridColumnStyle,
     };
 
     // ChildStyle
@@ -115,8 +118,8 @@ export class Column extends React.Component<ColumnProps, null> {
 
   render() {
     return (
-      <div className="AwesomeColumn" style={this.columnStyle}>
-        <div className="AwesomeColumnContent" style={this.childStyle}>
+      <div className="AwesomeColumnContent" style={this.columnStyle}>
+        <div className="AwesomeColumnSubContent" style={this.childStyle}>
           {this.props.children}
         </div>
       </div>

@@ -64,7 +64,7 @@ export default class MatchScroll extends React.Component<
   render() {
     return (
       <div
-        className="AwesomeColumnSubContent"
+        className="AwesomeColumn"
         ref={this.element}
         style={{ ...this.props.style, overflow: "scroll" }}
         onMouseEnter={() => {
