@@ -1,4 +1,6 @@
 tsconfig.json
 *.tsx
-ColumnTypes
 node_modules
+.gitignore
+*.lock
+src

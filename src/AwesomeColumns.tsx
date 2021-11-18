@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MatchScroll from "./ColumnTypes/MatchScroll";
 
 export default class AwesomeColumns extends React.Component<any, any> {
@@ -45,22 +45,22 @@ export default class AwesomeColumns extends React.Component<any, any> {
 
   renderChildren = () => {
     return React.Children.map(this.props.children, (child: any, i: number) => {
-      if (React.isValidElement(child)) {
-        const props: any = child?.props;
-        // if (React.Children.count(props.children) > 1) {
-        //   React.Children.forEach(child, (subChild: any) => {});
-        // }
-        return (
-          <MatchScroll
-            style={props.style && props.style}
-            smoothScroll={this.props.smoothScroll ? true : false}
-            index={i}
-            updateLength={this.updateLength}
-            scroll={this.state.currentScrollHeight}>
-            {child}
-          </MatchScroll>
-        );
-      }
+      // if (React.isValidElement(child)) {
+      const props: any = child?.props;
+      // if (React.Children.count(props.children) > 1) {
+      //   React.Children.forEach(child, (subChild: any) => {});
+      // }
+      return (
+        <MatchScroll
+          style={props.style && props.style}
+          smoothScroll={this.props.smoothScroll ? true : false}
+          index={i}
+          updateLength={this.updateLength}
+          scroll={this.state.currentScrollHeight}>
+          {child}
+        </MatchScroll>
+      );
+      // }
     });
   };
 
