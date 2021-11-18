@@ -59,12 +59,18 @@ e.g.:
 
 e.g.:
 `<Column style={{color:"blue}}> Content goes here</AwesomeColumns>`
+
 `<Column reverse> Upside-down content goes here</Column>`
+
 `<Column columns={3} padding={"5px"}> This column will span 3 columns</Column>`
 
 
 ### CSS modifiers (Class names for css modification)
+
 `AwesomeColumnContainer` - wrapper class for AwesomeColumns
+
 `AwesomeColumn` - wrapper class for Column
+
 `AwesomeColumnContent` - Inner class for Column (for reverse and effects)
+
 `AwesomeColumnSubContent` - wrapper class for your content
