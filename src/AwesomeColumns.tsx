@@ -95,9 +95,9 @@ export class Column extends React.Component<ColumnProps, null> {
     this.columnStyle = {
       ...props.style,
       gridColumn: this.props.columns
-        ? `span {this.props.columns}`
+        ? `span ${this.props.columns}`
         : this.props.style?.gridColumn
-        ? this.props.style?.gridColumn
+        ? this.props.style.gridColumn
         : "",
     };
 
