@@ -80,7 +80,6 @@ export default class AwesomeColumns extends React.Component<
 // Column
 type ColumnProps = {
   style?: any;
-  columns?: number;
   reverse?: boolean;
   padding: string;
 };

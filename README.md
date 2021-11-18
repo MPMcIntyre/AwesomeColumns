@@ -53,8 +53,6 @@ e.g.:
 
 `reverse`:`boolean` - Flips the column 180 degrees
 
-`columns`:`number` - Define how many columns to span
-
 `padding`: `string` - Designate padding to the AwesomeColumnContent class easily
 
 e.g.:
@@ -62,7 +60,7 @@ e.g.:
 
 `<Column reverse> Upside-down content goes here</Column>`
 
-`<Column columns={3} padding={"5px"}> This column will span 3 columns</Column>`
+`<Column padding={"5px"}> This column will span 3 columns</Column>`
 
 
 ### CSS modifiers (Class names for css modification)
