@@ -55,6 +55,12 @@ e.g.:
 
 `padding`: `string` - Designate padding to the AwesomeColumnContent class easily
 
+`onTop`: `function` -  A functional prop that executes when the columns reach the top
+
+`onBottom`: `function` - A functional prop that executes when the columns reach the bottom
+
+`onScroll`: `function` - A functional prop that executes on scroll with the current scroll height as a parameter (in %)
+
 e.g.:
 `<Column style={{color:"blue}}> Content goes here</AwesomeColumns>`
 

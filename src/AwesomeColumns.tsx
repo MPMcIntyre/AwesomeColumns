@@ -55,7 +55,7 @@ export default class AwesomeColumns extends React.Component<
     });
     if (length === 1 && this.props.onTop) this.props.onTop();
     if (length === 0 && this.props.onBottom) this.props.onBottom();
-    if (this.props.onScroll) this.props.onScroll(length * 100);
+    if (this.props.onScroll) this.props.onScroll(length);
   };
 
   // Render the Columns
