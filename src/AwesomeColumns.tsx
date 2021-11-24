@@ -53,8 +53,8 @@ export default class AwesomeColumns extends React.Component<
     this.setState({
       scroll: length,
     });
-    if (length === 1 && this.props.onTop) this.props.onTop();
-    if (length === 0 && this.props.onBottom) this.props.onBottom();
+    if (length === 100 && this.props.onBottom) this.props.onBottom();
+    if (length === 0 && this.props.onTop) this.props.onTop();
     if (this.props.onScroll) this.props.onScroll(length);
   };
 
