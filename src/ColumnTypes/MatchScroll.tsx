@@ -2,8 +2,8 @@ import React from "react";
 
 type MatchScrollProps = {
   scroll: number;
-  smoothScroll: boolean;
-  style: any;
+  smoothScroll?: boolean;
+  style?: any;
   updateScroll: (value: number) => void;
 };
 export default class MatchScroll extends React.Component<

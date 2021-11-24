@@ -5,7 +5,10 @@ type ContainerProps = {
   height?: string;
   width?: string;
   style?: any;
-  smoothScroll: boolean;
+  smoothScroll?: boolean;
+  onBottom?: () => void;
+  onTop?: () => void;
+  onScroll?: (length: number) => void;
 };
 
 type ContainerStates = {
@@ -50,6 +53,9 @@ export default class AwesomeColumns extends React.Component<
     this.setState({
       scroll: length,
     });
+    if (length === 1 && this.props.onTop) this.props.onTop();
+    if (length === 0 && this.props.onBottom) this.props.onBottom();
+    if (this.props.onScroll) this.props.onScroll(length * 100);
   };
 
   // Render the Columns
