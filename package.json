@@ -1,11 +1,23 @@
 {
   "name": "awesome-columns",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "Easily create columns with modified scroll speeds to ensure that all columns reach the end at the same time",
-  "main": "./lib/AwesomeColumns.js",
-  "repository": "https://github.com/MPMcIntyre/AwesomeColumns",
+  "main": "./lib/AwesomeColumns.jsx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MPMcIntyre/AwesomeColumns"
+  },
   "author": "M. McIntyre",
   "license": "MIT",
+  "types": "lib/AwesomeColumns.d.ts",
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "maintainers": [
+    "Michael McIntyre (https://github.com/MPMcIntyre)"
+  ],
   "private": false,
   "devDependencies": {
     "@types/react": "^17.0.35",

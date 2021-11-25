@@ -10,6 +10,8 @@
 # production
 /build
 /lib
+*.tgz
+
 
 # misc
 .DS_Store
