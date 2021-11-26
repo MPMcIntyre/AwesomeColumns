@@ -1,8 +1,8 @@
 {
   "name": "awesome-columns",
-  "version": "1.1.12",
+  "version": "1.1.16",
   "description": "Easily create columns with modified scroll speeds to ensure that all columns reach the end at the same time",
-  "main": "./lib/AwesomeColumns.jsx",
+  "main": "./lib/AwesomeColumns.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MPMcIntyre/AwesomeColumns"
@@ -31,5 +31,8 @@
     "columns",
     "scroll",
     "custom"
-  ]
+  ],
+  "scripts": {
+    "prepare": "yarn tsc"
+  }
 }

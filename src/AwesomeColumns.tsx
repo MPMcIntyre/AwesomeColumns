@@ -90,7 +90,7 @@ type ColumnProps = {
   padding?: string;
 };
 
-export class Column extends React.Component<ColumnProps, null> {
+export class Column extends React.Component<ColumnProps, any> {
   columnStyle: any;
   childStyle: any;
 
