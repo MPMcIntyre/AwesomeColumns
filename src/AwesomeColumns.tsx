@@ -87,10 +87,10 @@ export default class AwesomeColumns extends React.Component<
 type ColumnProps = {
   style?: any;
   reverse?: boolean;
-  padding: string;
+  padding?: string;
 };
 
-export class Column extends React.Component<ColumnProps, null> {
+export class Column extends React.Component<ColumnProps, any> {
   columnStyle: any;
   childStyle: any;
 
