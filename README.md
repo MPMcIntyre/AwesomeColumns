@@ -4,6 +4,19 @@ Easy to create columns for React with calculated scroll speeds
 
 [CodeSandBox example](https://codesandbox.io/s/awesome-columns-example-jbdr8?file=/src/App.js)
 
+### Version History
+
+- v2.0.0:
+  - Core structure updates
+  - Changed from reliance on react states to RAF for updates
+  - Improved mobile compatibility
+  - Removed smooth scrolling (not functioning) and added scrollResolution
+
+- v1.0.0-1.1.16:
+  - Project initialisation
+  - Typescript features
+  - onScroll, onTop, and onBottom functionality
+
 ### Usage
 
 
@@ -41,7 +54,7 @@ By default, the container is set to 100vh and 100% width!
 
 `width`:`string` - Width of the containing div
 
-`smoothScroll` - Enables smooth scroll (not recomended for now)
+`scrollResolution`: `number` - As the name implies creates a scroll resoution with the value in % of the total scrollable height
 
 e.g.:
 `<AwesomeColumns width={"50%"} height={"200px"} style={{color:"blue}}> {Columns}</AwesomeColumns>`
