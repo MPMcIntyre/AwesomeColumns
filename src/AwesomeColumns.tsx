@@ -5,7 +5,8 @@ type ContainerProps = {
   height?: string;
   width?: string;
   style?: any;
-  smoothScroll?: boolean;
+
+  scrollResolution?: number;
   onBottom?: () => void;
   onTop?: () => void;
   onScroll?: (length: number) => void;
@@ -13,6 +14,8 @@ type ContainerProps = {
 
 type ContainerStates = {
   scroll: number;
+  lastActive: any;
+  isAtLimit: boolean;
 };
 export default class AwesomeColumns extends React.Component<
   ContainerProps,
@@ -24,6 +27,8 @@ export default class AwesomeColumns extends React.Component<
 
     this.state = {
       scroll: 0,
+      lastActive: null,
+      isAtLimit: true,
     };
 
     // AwesomeColumns style
@@ -46,15 +51,34 @@ export default class AwesomeColumns extends React.Component<
     };
   }
 
-  // componentDidMount() {}
+  // Last component to update
+  setLastActive = (element: any) => {
+    this.setState({ lastActive: element });
+  };
 
   // Update scroll position
   updateScroll = (length: number) => {
     this.setState({
       scroll: length,
     });
-    if (length === 100 && this.props.onBottom) this.props.onBottom();
-    if (length === 0 && this.props.onTop) this.props.onTop();
+
+    // Run edge function if the scroll position is at the edge (obv)
+    // The state 'isAtLimit' ensures that the function is not continuously run
+    if (length === 100 && this.props.onBottom) {
+      if (!this.state.isAtLimit) {
+        this.props.onBottom();
+        this.setState({ isAtLimit: true });
+      }
+    } else if (length === 0 && this.props.onTop) {
+      if (!this.state.isAtLimit) {
+        this.props.onTop();
+        this.setState({ isAtLimit: true });
+      }
+    } else {
+      // If we are not at the top or bottom limits, set the state to false
+      this.setState({ isAtLimit: false });
+    }
+    // On scroll function
     if (this.props.onScroll) this.props.onScroll(length);
   };
 
@@ -65,8 +89,12 @@ export default class AwesomeColumns extends React.Component<
       return (
         <MatchScroll
           style={props.style && props.style}
-          smoothScroll={this.props.smoothScroll ? true : false}
+          scrollResolution={
+            this.props.scrollResolution && this.props.scrollResolution
+          }
           updateScroll={this.updateScroll}
+          setLastActive={this.setLastActive}
+          lastActive={this.state.lastActive}
           scroll={this.state.scroll}>
           {child}
         </MatchScroll>

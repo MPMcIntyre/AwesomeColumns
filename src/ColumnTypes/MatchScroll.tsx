@@ -2,13 +2,21 @@ import React from "react";
 
 type MatchScrollProps = {
   scroll: number;
-  smoothScroll?: boolean;
+  scrollResolution?: number;
   style?: any;
   updateScroll: (value: number) => void;
+  setLastActive: (element: any) => void;
+  lastActive: any;
 };
+
+type MatchScrollStates = {
+  scroll: number;
+  isActive: boolean;
+};
+
 export default class MatchScroll extends React.Component<
   MatchScrollProps,
-  any
+  MatchScrollStates
 > {
   element: any; // React useRef hook for element
   timeout: any;
@@ -23,78 +31,78 @@ export default class MatchScroll extends React.Component<
   }
 
   updateScroll() {
-    this.element?.current?.scrollTo({
+    this.element.current.scrollTo({
       top:
         ((this.element.current.scrollHeight - window.innerHeight) *
           this.state.scroll) /
         100,
-      behavior: this.props.smoothScroll ? "smooth" : "auto",
+      behavior: "auto",
     });
-    this.timeout = setTimeout(() => {
-      this.element?.current?.scrollTo({
-        top:
-          ((this.element.current.scrollHeight - window.innerHeight) *
-            this.state.scroll) /
-          100,
-        behavior: this.props.smoothScroll ? "smooth" : "auto",
-      });
-      this.timeout = null;
-    }, 100);
   }
 
-  handleUpdate = () => {
-    if (this.props.scroll !== this.state.scroll) {
+  waitForChange = () => {
+    let fractionToTop =
+      (100 * this.element.current.scrollTop) /
+      (this.element.current.scrollHeight - window.innerHeight);
+
+    // This variable is created to account for scroll resolution problems near the start and end
+    let updateValue = this.props.scroll;
+
+    // isUpdated tests the current position relative to the previous state, and takes into account scroll res
+    let isUpdated;
+    if (this.props.scrollResolution) {
+      if (this.props.scroll >= 100 - this.props.scrollResolution) {
+        isUpdated = false;
+        updateValue = 100;
+      } else if (this.props.scroll <= this.props.scrollResolution) {
+        isUpdated = false;
+        updateValue = 0;
+      } else {
+        isUpdated =
+          Math.abs(fractionToTop - this.state.scroll) <=
+          this.props.scrollResolution;
+      }
+    } else {
+      isUpdated = fractionToTop === this.state.scroll / 100;
+    }
+
+    let isSynced = this.state.scroll === this.props.scroll;
+    let lastActive = this.element.current === this.props.lastActive;
+
+    if (!isUpdated && isSynced) {
+      // Update props.scroll to move other columns
+      lastActive && this.props.updateScroll(fractionToTop);
       this.setState({
-        scroll: this.props.scroll,
+        scroll: fractionToTop,
+      });
+    } else if (!isSynced) {
+      // Set state and scroll the column
+      this.setState({
+        scroll: updateValue,
       });
       this.updateScroll();
     }
+
+    // Create RAF loop
+    requestAnimationFrame(this.waitForChange);
   };
 
-  componentDidUpdate() {
-    if (!this.state.isActive) {
-      this.handleUpdate();
-    }
+  componentDidMount() {
+    this.waitForChange();
   }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeout);
-  }
-
-  handleScroll = (e: any) => {
-    if (this.state.isActive) {
-      this.setState({
-        scroll:
-          100 *
-          (e.target.scrollTop / (e.target.scrollHeight - window.innerHeight)),
-      });
-
-      let fractionToTop =
-        100 *
-        (e.target.scrollTop / (e.target.scrollHeight - window.innerHeight));
-      this.props.updateScroll(fractionToTop);
-    }
-  };
 
   render() {
     return (
       <div
         className="AwesomeColumn"
         ref={this.element}
-        style={{ ...this.props.style, overflow: "scroll" }}
-        onMouseEnter={() => {
-          this.setState({ isActive: true });
+        style={{ ...this.props.style, overflow: "auto" }}
+        onWheel={() => {
+          this.props.setLastActive(this.element.current);
         }}
-        onMouseLeave={() => {
-          this.setState({ isActive: false });
-        }}
-        onTouchStart={() => {
-          this.setState({ isActive: true });
-        }}
-        onTouchEnd={() => {
-          this.setState({ isActive: false });
-        }}
-        onScroll={this.handleScroll}>
+        onTouchMove={() => {
+          this.props.setLastActive(this.element.current);
+        }}>
         {this.props.children}
       </div>
     );
