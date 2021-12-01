@@ -20,6 +20,7 @@ export default class MatchScroll extends React.Component<
 > {
   element: any; // React useRef hook for element
   timeout: any;
+  isActive: any;
   constructor(props: any) {
     super(props);
     this.state = {
@@ -28,6 +29,7 @@ export default class MatchScroll extends React.Component<
     };
     this.element = React.createRef();
     this.timeout = null;
+    this.isActive = React.createRef();
   }
 
   updateScroll() {
@@ -41,54 +43,61 @@ export default class MatchScroll extends React.Component<
   }
 
   waitForChange = () => {
-    let fractionToTop =
-      (100 * this.element.current.scrollTop) /
-      (this.element.current.scrollHeight - window.innerHeight);
+    if (this.isActive.current) {
+      let fractionToTop =
+        (100 * this.element.current.scrollTop) /
+        (this.element.current.scrollHeight - window.innerHeight);
 
-    // This variable is created to account for scroll resolution problems near the start and end
-    let updateValue = this.props.scroll;
+      // This variable is created to account for scroll resolution problems near the start and end
+      let updateValue = this.props.scroll;
 
-    // isUpdated tests the current position relative to the previous state, and takes into account scroll res
-    let isUpdated;
-    if (this.props.scrollResolution) {
-      if (this.props.scroll >= 100 - this.props.scrollResolution) {
-        isUpdated = false;
-        updateValue = 100;
-      } else if (this.props.scroll <= this.props.scrollResolution) {
-        isUpdated = false;
-        updateValue = 0;
+      // isUpdated tests the current position relative to the previous state, and takes into account scroll res
+      let isUpdated;
+      if (this.props.scrollResolution) {
+        if (this.props.scroll >= 100 - this.props.scrollResolution) {
+          isUpdated = false;
+          updateValue = 100;
+        } else if (this.props.scroll <= this.props.scrollResolution) {
+          isUpdated = false;
+          updateValue = 0;
+        } else {
+          isUpdated =
+            Math.abs(fractionToTop - this.state.scroll) <=
+            this.props.scrollResolution;
+        }
       } else {
-        isUpdated =
-          Math.abs(fractionToTop - this.state.scroll) <=
-          this.props.scrollResolution;
+        isUpdated = fractionToTop === this.state.scroll / 100;
       }
-    } else {
-      isUpdated = fractionToTop === this.state.scroll / 100;
+
+      let isSynced = this.state.scroll === this.props.scroll;
+      let lastActive = this.element.current === this.props.lastActive;
+
+      if (!isUpdated && isSynced) {
+        // Update props.scroll to move other columns
+        lastActive && this.props.updateScroll(fractionToTop);
+        this.setState({
+          scroll: fractionToTop,
+        });
+      } else if (!isSynced) {
+        // Set state and scroll the column
+        this.setState({
+          scroll: updateValue,
+        });
+        this.updateScroll();
+      }
+
+      // Create RAF loop
+      this.isActive.current && requestAnimationFrame(this.waitForChange);
     }
-
-    let isSynced = this.state.scroll === this.props.scroll;
-    let lastActive = this.element.current === this.props.lastActive;
-
-    if (!isUpdated && isSynced) {
-      // Update props.scroll to move other columns
-      lastActive && this.props.updateScroll(fractionToTop);
-      this.setState({
-        scroll: fractionToTop,
-      });
-    } else if (!isSynced) {
-      // Set state and scroll the column
-      this.setState({
-        scroll: updateValue,
-      });
-      this.updateScroll();
-    }
-
-    // Create RAF loop
-    requestAnimationFrame(this.waitForChange);
   };
 
   componentDidMount() {
+    this.isActive.current = true;
     this.waitForChange();
+  }
+
+  componentWillUnmount() {
+    this.isActive.current = false;
   }
 
   render() {
